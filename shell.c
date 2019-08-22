@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <signal.h>
-
-int count_args(char **args);
-char *_strcpy(char *dest, const char *src);
-size_t _strlen(const char *s);
-
-typedef struct args
-{
-	char * args;
-	struct args * next;
-} list_t;
+#include "holberton.h"
 
 int main()
 {

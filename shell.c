@@ -1,59 +1,80 @@
 #include "holberton.h"
 
-int main()
+int main(int ac, char *arv[])
 {
-	/* Create Proccess*/
+/* Create Proccess*/
+	(void)ac ;
+/* symbol */
+
 	pid_t pid;
-	/* getline */
-	int gl, i, j, m;
+/* getline */
+	int gl, i;
 	char *buf = NULL;
-	char *line_cmd;
-	int size = 1024;
-	size_t num_line = 1024;
-	/* user */
-	char* username = getenv("USER");
-/*	char curr_path[size];
-	char *path = getcwd(curr_path,-1);
-*/
+
+	int cmp = 0;
+	char *line_cmd = NULL;
+	size_t size = 1024;
+	int len_cmd = 1024;
 /* strtok */
 	char *cmd;
 	const char s[2] = " ";
 	char *argv[size];
-	
-//	char *arg_path[size];
+
+	struct stat filestat;
+	int bin_stat;
+
 	int status;
-//	char *args[] =/ {"/bin/ls", "-l",NULL};
-	line_cmd = (char *) malloc(size * sizeof(char));
-//		execve(args[0],args, NULL);
+/* allocate for clean command of \n */
+	line_cmd = (char *) malloc(len_cmd * sizeof(char));
+	if (line_cmd == NULL)
+		return (-1);
+
 	while (1)
 	{
-		if (pid == -1)
-		{
-			perror("Error:");
-			exit(0);
-		}
-		printf("\33[1;31m%s@miniShell\33[0m:$ ", username);
-		if ((gl = getline(&buf, &num_line, stdin) == EOF))
-		{
-			exit(2);		
-		}
+		_puts("#cisfun$ ");
+		
+		gl = getline(&buf, &size, stdin); 
 		if(gl == -1)
 		{
-			perror("Error:");
-			exit(3);
+			exit(-1);
 		}
-		_strcpy(line_cmd, buf);
-		cmd = strtok(line_cmd, s);
+		if (*buf == EOF)
+		{
+			kill(pid, SIGKILL);
+			exit(0);		
+		}
+		if (_strcmp(buf, "\n") != 0)
+		{
+			_strcpy(line_cmd, buf);
+			cmd = strtok(line_cmd, s);
+		}
+		else
+		{
+			cmd = strtok(buf, s);
+		}			
+			
 		for(i = 0; cmd != NULL; i++)
 		{	
 			argv[i] = cmd;
 			cmd = strtok(NULL, s);
 		} 
 
+		if ((_strcmp(argv[0],"exit")) == 0)
+		{
+			kill(pid, SIGKILL);
+			exit(0);
+		}
 		pid = fork();
 		if(pid == 0)
 		{
-			execve(argv[0], argv, NULL);
+			
+			bin_stat = lstat(argv[0], &filestat);
+			if (bin_stat < 0 && _strcmp(argv[0],"\n") != 0 )
+				perror(arv[0]);
+			else
+			{	
+				execve(argv[0], argv, NULL);
+			}
 		}
 		else
 		{				
@@ -61,30 +82,5 @@ int main()
 			kill(pid, SIGKILL);
 		}
 	}
-	free(line_cmd);
 	return (0);
-}
-int count_args(char **args)
-{
-	int j = 0;
-	while(args[j])
-		j++;
-	return(j);
-}
-char *_strcpy(char *dest, const char *src)
-{
-	size_t i, n = _strlen(src);	
-	for(i = 0; i < n; i++)
-		if (src[i] != '\n')		
-			dest[i] = src[i];
-		else
-			dest[i] = '\0';
-	return(dest);
-}
-size_t _strlen(const char *s)
-{
-	size_t i = 0;
-	while(s[i])
-		i++;
-	return(i);
 }

@@ -13,14 +13,14 @@ simple_shell is the user interface to communicate with the operative system serv
 
 ### Compiling
 ```
-gcc -g -Wall -Werror -pedantic *.c -o shell --debug
+gcc -g -Wall -Werror -Wextra -pedantic *.c -o hsh
 ```
 ### Running
 ```
 ./shell
 ```
 ### Output
-For now Micro_shell only run with single commands without arguments and you need to specify the folder.
+For now simple_shell only run with single commands without arguments and you need to specify the folder.
 
 ##### Example:
 ```

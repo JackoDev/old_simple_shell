@@ -1,37 +1,25 @@
 #include "holberton.h"
 
-int main(int ac, char *arv[])
+int main()
 {
-/* Create Proccess*/
-	(void)ac ;
 /* PATH */
-/*
-char *PATH= "/bin/";
-	char *pathname = NULL;
-*/	
 	pid_t pid;
-/* getline */
-	int gl, i, count = 0;
-	char *buf = NULL;
-	char *line_cmd = NULL;
+/* getline,iterator,execve and wait */
+	int gl, i, count = 0, _exec, status; 
+	char *buf = NULL, *line_cmd = NULL; /* buffer and command line */
 	size_t size = 1024;
 /* strtok */
-	char *cmd;
-	const char s[2] = " ";
-	char *argv[CMD_SIZE];
-
-	struct stat filestat;
-	int bin_stat;
-
-	int status;
+	char *cmd, *argv[CMD_SIZE];
+	const char s[2] = " "; 
+/* ALLOCATE*/
 /* allocate for clean command of \n */
 	line_cmd = (char *) malloc(CMD_SIZE * sizeof(char));
 	if (line_cmd == NULL)
-		return (-1);
+		exit(-1);
 
 	while (1)
 	{
-		_puts("#cisfun$ ");
+		print_sign();
 
 		gl = getline(&buf, &size, stdin);
 
@@ -41,6 +29,7 @@ char *PATH= "/bin/";
 		if (*buf == EOF)
 		{
 			free(line_cmd);
+			free(buf);
 			kill(pid, SIGQUIT);
 			exit(0);		
 		}
@@ -62,23 +51,16 @@ char *PATH= "/bin/";
 		if ((_strcmp(argv[0],"exit")) == 0)
 		{
 			free(line_cmd);
+			free(buf);
 			kill(pid, SIGQUIT);
 			exit(0);
 		}
 		pid = fork();
 		if(pid == 0)
 		{
-			
-			bin_stat = lstat(argv[0], &filestat);
-			if (bin_stat < 0 && _strcmp(argv[0],"\n") != 0 )
-			{
-				perror(arv[0]);
-				kill(pid, SIGCONT);
-			}
-			else
-			{	
-				execve(argv[0], argv, environ);
-			}
+			_exec = _execve(search_cmd(argv[0]), argv, environ);
+			if (_exec == -1)
+				perror(argv[0]);
 		}
 		else
 		{				
@@ -89,4 +71,3 @@ char *PATH= "/bin/";
 	}
 	return (0);
 }
-

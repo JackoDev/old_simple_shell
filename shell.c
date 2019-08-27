@@ -1,14 +1,11 @@
 #include "holberton.h"
 
-int main(int ac, char *arv[])
+int main()
 {
-/* Create Proccess*/
-	(void)ac ;
 /* PATH */
-	char curr_path[512];
 	pid_t pid;
 /* getline,iterator,execve and wait */
-	int gl, i, count = 0, _exec,  status; 
+	int gl, i, count = 0, _exec, status; 
 	char *buf = NULL, *line_cmd = NULL; /* buffer and command line */
 	size_t size = 1024;
 /* strtok */
@@ -22,9 +19,7 @@ int main(int ac, char *arv[])
 
 	while (1)
 	{
-		_puts("#cisfun@");
-		_puts(getcwd(curr_path, -1));
-		_puts("$ ");
+		print_sign();
 
 		gl = getline(&buf, &size, stdin);
 
@@ -56,13 +51,14 @@ int main(int ac, char *arv[])
 		if ((_strcmp(argv[0],"exit")) == 0)
 		{
 			free(line_cmd);
+			free(buf);
 			kill(pid, SIGQUIT);
 			exit(0);
 		}
 		pid = fork();
 		if(pid == 0)
 		{
-			_exec = _execve(argv[0], argv, environ);
+			_exec = _execve(search_cmd(argv[0]), argv, environ);
 			if (_exec == -1)
 				perror(argv[0]);
 		}

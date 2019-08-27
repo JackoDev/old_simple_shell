@@ -1,5 +1,5 @@
-#ifndef HOLBERTON_H
-#define HOLBERTON_H
+#ifndef _HOLBERTON_H_
+#define _HOLBERTON_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,10 +10,22 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
-
+#include <dirent.h>
 #define CMD_SIZE 1024
 
 extern char **environ;
+
+/**
+ * struct line_cmds - entry command
+ * @cmd: commds to search into list
+ * @func: Second member
+ */
+typedef struct line_cmds
+{
+	char *cmd;
+	void (*func)(char *arg);
+
+} line_cmd;
 
 int count_args(char **args);
 char *_strcpy(char *dest, const char *src);
@@ -22,5 +34,10 @@ int _strcmp(char *s1, char *s2);
 int _putchar(char c);
 void _puts(char *str);
 void args_null(char **args, int height);
+int _execve(char *pathname, char *const argv[], char *const envp[]);
+void cd_fun(char *path);
+char *search_cmd(char *args);
+void print_sign(void);
+char *_strcat(char *dest, char *src);
 
-#endif /** HOLBERTON_H*/
+#endif/* _HOLBERTON_H_ */

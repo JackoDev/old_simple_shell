@@ -12,7 +12,7 @@ char *search_cmd(char *args)
 	DIR *dir;
 	struct dirent *curr_dir;
 
-	dir = opendir("/bin")
+	dir = opendir("/bin");
 	if (dir == NULL)
 	{
 		perror("Error: ");

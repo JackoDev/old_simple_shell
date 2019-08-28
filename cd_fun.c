@@ -5,5 +5,9 @@
  */
 void cd_fun(char *path)
 {
-	chdir(path);
+	int file;
+
+	file = chdir(path);
+	if (file < 0)
+		perror(path);
 }

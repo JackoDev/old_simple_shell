@@ -12,6 +12,7 @@ int main(void)
 	char *cmd, *argv[CMD_SIZE];
 	const char s[2] = " "; 
 /* allocate for clean command of \n */
+	signal(SIGINT, ctrl_c);
 	line_cmd = (char *) malloc(CMD_SIZE * sizeof(char));
 	if (line_cmd == NULL)
 		exit(-1);

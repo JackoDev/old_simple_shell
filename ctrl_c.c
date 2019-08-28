@@ -7,8 +7,8 @@
 void ctrl_c(int x)
 {
 	(void) x;
-	/*write(1, "\n$ ", 3);*/
+	write(1, "\n$ ", 3);
 	_puts("\n");
-	print_sign();
+	/*print_sign();*/
 	fflush(stdout);
 }

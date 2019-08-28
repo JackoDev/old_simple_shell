@@ -41,5 +41,6 @@ void cd_fun(char *path);
 void help_fun(char *path);
 void print_sign(void);
 char *_strcat(char *dest, char *src);
+void ctrl_c(int x);
 
 #endif/* _HOLBERTON_H_ */

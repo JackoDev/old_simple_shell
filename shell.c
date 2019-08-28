@@ -5,12 +5,14 @@ int main(void)
 /* PATH */
 	pid_t pid;
 /* getline,iterator,execve and wait */
-	int gl, i, count = 0, _exec, status; 
+	int gl, i, count = 0, _exec, status;
 	char *buf = NULL, *line_cmd = NULL; /* buffer and command line */
 	size_t size = 1024;
 /* strtok */
 	char *cmd, *argv[CMD_SIZE];
-	const char s[2] = " "; 
+	const char s[2] = " ";
+
+	signal(SIGINT, ctrl_c);
 /* allocate for clean command of \n */
 	line_cmd = (char *) malloc(CMD_SIZE * sizeof(char));
 	if (line_cmd == NULL)
@@ -21,7 +23,7 @@ int main(void)
 		print_sign();
 
 		gl = getline(&buf, &size, stdin);
-		if(gl == -1)
+		if (gl == -1)
 			exit(-1);
 
 		if (*buf == EOF)
@@ -29,7 +31,7 @@ int main(void)
 			free(line_cmd);
 			free(buf);
 			kill(pid, SIGQUIT);
-			exit(0);		
+			exit(0);
 		}
 		if (_strcmp(buf, "\n") != 0)
 		{
@@ -38,14 +40,14 @@ int main(void)
 		}
 		else
 			cmd = strtok(buf, s);
-		
-		for(i = 0; cmd != NULL; i++)
-		{	
+
+		for (i = 0; cmd != NULL; i++)
+		{
 			argv[i] = cmd;
 			cmd = strtok(NULL, s);
-		} 
+		}
 		count = i;
-		if ((_strcmp(argv[0],"exit")) == 0)
+		if ((_strcmp(argv[0], "exit")) == 0)
 		{
 			free(line_cmd);
 			free(buf);
@@ -53,9 +55,8 @@ int main(void)
 			exit(0);
 		}
 		pid = fork();
-		if(pid == 0)
+		if (pid == 0)
 		{
-			
 			_exec = _execve(argv[0], argv, environ);
 			if (_exec == -1)
 			{
@@ -64,10 +65,10 @@ int main(void)
 			}
 		}
 		else
-		{				
+		{
 			wait(&status);
 			kill(pid, SIGQUIT);
-		}	
+		}
 		args_null(argv, count);
 	}
 	return (0);

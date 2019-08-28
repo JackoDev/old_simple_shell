@@ -9,6 +9,7 @@
 int _execve(char *pathname, char *const argv[], char *const envp[])
 {
 	int i, cmp, n_exec = 0;
+	char path[128] = "/bin/";
 
 	line_cmd cmds[] = {
 			{"cd", cd_fun},
@@ -17,20 +18,20 @@ int _execve(char *pathname, char *const argv[], char *const envp[])
 	if (_strcmp(pathname, "\n") == 0)
 		return (0);
 
-	n_exec = execve(pathname, argv, envp);
+	n_exec = execve(_strcat(path, pathname), argv, envp);
 	if (n_exec < 0)
 	{
-		if (pathname != NULL)
+		for (i = 0; cmds[i].cmd != NULL; i++)
 		{
-			for (i = 0; cmds[i].cmd != NULL; i++)
+			cmp = _strcmp(pathname, cmds[i].cmd);
+			if (cmp == 0)
 			{
-				cmp = _strcmp(pathname, cmds[i].cmd);
-				if (cmp == 0)
-				{
-					cmds[i].func(argv[1]);
-					return (n_exec);
-				}
+				cmds[i].func(argv[1]);
+				n_exec = 0;
+				return (n_exec);
 			}
+			else
+				n_exec = -1;
 		}
 	}
 	return (n_exec);

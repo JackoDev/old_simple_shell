@@ -17,21 +17,25 @@ int _execve(char *pathname, char *const argv[], char *const envp[])
 	};
 	if (_strcmp(pathname, "\n") == 0)
 		return (0);
-
-	n_exec = execve(_strcat(path, pathname), argv, envp);
-	if (n_exec < 0)
-	{
-		for (i = 0; cmds[i].cmd != NULL; i++)
+	
+	n_exec = execve(pathname, argv, envp);
+	if (n_exec == -1)
+	{	
+		n_exec = execve(_strcat(path, pathname), argv, envp);
+		if (n_exec == 1)
 		{
-			cmp = _strcmp(pathname, cmds[i].cmd);
-			if (cmp == 0)
+			for (i = 0; cmds[i].cmd != NULL; i++)
 			{
-				cmds[i].func(argv[1]);
-				n_exec = 0;
-				return (n_exec);
+				cmp = _strcmp(pathname, cmds[i].cmd);
+				if (cmp == 0)
+				{
+					cmds[i].func(argv[1]);
+					n_exec = 0;
+					return (n_exec);
+				}
+				else
+					n_exec = -1;
 			}
-			else
-				n_exec = -1;
 		}
 	}
 	return (n_exec);

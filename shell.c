@@ -4,7 +4,6 @@ int main(void)
 {
 /* PATH */
 	pid_t pid;
-	signal(SIGINT, ctrl_c);
 /* getline,iterator,execve and wait */
 	int gl, i, count = 0, _exec, status; 
 	char *buf = NULL, *line_cmd = NULL; /* buffer and command line */
@@ -56,6 +55,7 @@ int main(void)
 		pid = fork();
 		if(pid == 0)
 		{
+			
 			_exec = _execve(argv[0], argv, environ);
 			if (_exec == -1)
 			{

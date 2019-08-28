@@ -1,6 +1,6 @@
 #include "holberton.h"
 
-int main()
+int main(void)
 {
 /* PATH */
 	pid_t pid;
@@ -11,7 +11,6 @@ int main()
 /* strtok */
 	char *cmd, *argv[CMD_SIZE];
 	const char s[2] = " "; 
-/* ALLOCATE*/
 /* allocate for clean command of \n */
 	line_cmd = (char *) malloc(CMD_SIZE * sizeof(char));
 	if (line_cmd == NULL)
@@ -22,7 +21,6 @@ int main()
 		print_sign();
 
 		gl = getline(&buf, &size, stdin);
-
 		if(gl == -1)
 			exit(-1);
 
@@ -33,7 +31,6 @@ int main()
 			kill(pid, SIGQUIT);
 			exit(0);		
 		}
-
 		if (_strcmp(buf, "\n") != 0)
 		{
 			_strcpy(line_cmd, buf);
@@ -58,9 +55,12 @@ int main()
 		pid = fork();
 		if(pid == 0)
 		{
-			_exec = _execve(search_cmd(argv[0]), argv, environ);
+			_exec = _execve(argv[0], argv, environ);
 			if (_exec == -1)
-				perror(argv[0]);
+			{
+				_puts(argv[0]);
+				_puts(": command not found.\n");
+			}
 		}
 		else
 		{				

@@ -11,6 +11,8 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <errno.h>
+
 #define CMD_SIZE 1024
 
 extern char **environ;
@@ -36,7 +38,7 @@ void _puts(char *str);
 void args_null(char **args, int height);
 int _execve(char *pathname, char *const argv[], char *const envp[]);
 void cd_fun(char *path);
-char *search_cmd(char *args);
+void help_fun(char *path);
 void print_sign(void);
 char *_strcat(char *dest, char *src);
 

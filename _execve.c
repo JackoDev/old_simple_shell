@@ -22,7 +22,7 @@ int _execve(char *pathname, char *const argv[], char *const envp[])
 	if (n_exec == -1)
 	{	
 		n_exec = execve(_strcat(path, pathname), argv, envp);
-		if (n_exec == 1)
+		if (n_exec == -1)
 		{
 			for (i = 0; cmds[i].cmd != NULL; i++)
 			{
